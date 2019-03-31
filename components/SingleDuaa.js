@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Vibration, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 const backgroundImage = require('../backgroundImage.png');
@@ -16,9 +16,13 @@ export default class App extends Component {
     this.setState(prevState => ({
       times: prevState.times > 1 ? prevState.times - 1 : 0,
       isCompleted: prevState.times <= 1,
-    }))
+    }),
+    () => !this.state.isCompleted && Vibration.vibrate(75));
   }
 
+  handleOnPressShare = () => {
+    console.log("share this duaa", this.props.text);
+  }
   getTimes(number = 1) {
     if (!number) {
       return ``;
@@ -38,10 +42,12 @@ export default class App extends Component {
     const {isCompleted, text, times} = this.state;
 
     return (
-      <TouchableOpacity style={styles.singleDuaa} onPress={this.handleClickDuaa}>
-        <View>
-          <Text style={styles.duaaText}>{text}</Text>
-        </View>
+      <View style={styles.singleDuaa}>
+        <TouchableOpacity onPress={this.handleClickDuaa}>
+          <View>
+            <Text style={styles.duaaText}>{text}</Text>
+          </View>
+        </TouchableOpacity>
         <View style={styles.duaaFooter}>
           {times > 0 &&
             <Text style={styles.footerTimes}>{this.getTimes(times)}</Text>
@@ -49,9 +55,11 @@ export default class App extends Component {
           {isCompleted &&
             <Icon style={styles.footerIconCheck} color="#3aed93" name="check-square" type="font-awesome" />
           }
-          <Icon style={styles.footerIconSend} color="white" name="paper-plane" type="font-awesome" />
+          <TouchableOpacity onPress={this.handleOnPressShare}>
+            <Icon style={styles.footerIconSend} color="white" name="paper-plane" type="font-awesome" />
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
 }
