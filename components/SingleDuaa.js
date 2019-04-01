@@ -13,20 +13,22 @@ export default class App extends Component {
   }
 
   handleClickDuaa = () => {
-    this.setState(prevState => ({
-      times: prevState.times > 1 ? prevState.times - 1 : 0,
-      isCompleted: prevState.times <= 1,
-    }),
-    () => !this.state.isCompleted && Vibration.vibrate(75));
+    if (!this.state.isCompleted) {
+      this.setState(prevState => ({
+        times: prevState.times >= 1 ? prevState.times - 1 : 0,
+      }),
+      () => this.setState(prevState => ({
+        isCompleted: prevState.times === 0,
+      }),
+      () => Vibration.vibrate(75)));
+    }
   }
 
   handleOnPressShare = () => {
     console.log("share this duaa", this.props.text);
   }
   getTimes(number = 1) {
-    if (!number) {
-      return ``;
-    } else if (number === 1) {
+    if (number === 1) {
       return `مره واحده`;
     } else if (number === 2) {
       return `مرتين`;
@@ -38,7 +40,6 @@ export default class App extends Component {
   }
 
   render() {
-    console.log("single dua rendered");
     const {isCompleted, text, times} = this.state;
 
     return (
@@ -73,8 +74,7 @@ const styles = StyleSheet.create({
   },
   singleDuaa: {
     backgroundColor: 'rgba(0, 0, 0, .17)',
-    marginRight: 10,
-    marginLeft: 10,
+    marginHorizontal: 10,
   },
   duaaText: {
     writingDirection: 'rtl',
@@ -91,9 +91,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#3F51B5',
     justifyContent: 'space-between',
-    padding: 10,
-    borderBottomWidth: 5,
-    borderBottomColor: '#5f70c8',
+    paddingVertical: 7,
+    paddingHorizontal: 15,
+    borderBottomWidth: 3,
+    borderBottomColor: '#7989e0',
   },
   footerTimes: {
     color: 'white',

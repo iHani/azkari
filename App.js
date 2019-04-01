@@ -6,7 +6,7 @@ import DuaaList from './components/DuaaList';
 const MainNavigator = createStackNavigator({
   Home: {
     screen: MainPage,
-  },
+    },
   DuaaList: {
     screen: DuaaList,
   },

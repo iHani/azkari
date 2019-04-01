@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ImageBackground, StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Button, Header } from 'react-native-elements';
-
 import duaaCategoryList from '../duaaCategoryList';
 
 const backgroundImage = require('../backgroundImage.png');
@@ -23,11 +22,7 @@ export default class App extends Component {
         <ImageBackground source={backgroundImage} style={{width: '100%', height: '100%'}}>
 
           <Header
-            containerStyle={{
-              backgroundColor: '#3F51B5',
-              justifyContent: 'space-around',
-              alignItems: 'center',
-            }}
+            containerStyle={{ backgroundColor: '#3F51B5' }}
             leftComponent={{ icon: 'share', color: '#fff', size: 30 }}
             rightComponent={{ text: 'أذكــاري', style: { color: 'white', fontSize: 22 } }}
             />
