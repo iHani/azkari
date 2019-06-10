@@ -1,3 +1,0 @@
-# Azkari
-
-`yarn && yarn start`

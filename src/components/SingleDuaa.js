@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { Vibration, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { StyleSheet, Share, Text, View, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 
-const backgroundImage = require('../backgroundImage.png');
-
-export default class App extends Component {
+class SingleDuaa extends Component {
 
   state = {
-    text: this.props.text,
-    times: this.props.times,
+    times: this.props.times || 1,
     isCompleted: false,
   }
 
@@ -17,16 +15,19 @@ export default class App extends Component {
       this.setState(prevState => ({
         times: prevState.times >= 1 ? prevState.times - 1 : 0,
       }),
-      () => this.setState(prevState => ({
-        isCompleted: prevState.times === 0,
-      }),
-      () => Vibration.vibrate(75)));
+        () => this.setState(prevState => ({
+          isCompleted: prevState.times === 0,
+        }))
+      );
     }
   }
 
-  handleOnPressShare = () => {
-    console.log("share this duaa", this.props.text);
-  }
+  handleOnPressShare = () =>
+    Share.share({
+      message: this.props.text,
+      title: 'Share with'
+    });
+87
   getTimes(number = 1) {
     if (number === 1) {
       return `مره واحده`;
@@ -40,25 +41,25 @@ export default class App extends Component {
   }
 
   render() {
-    const {isCompleted, text, times} = this.state;
+    const { isCompleted, times } = this.state;
+    const { text, preferredFontSize } = this.props;
+
+    if (isCompleted) {
+      return null
+    }
 
     return (
       <View style={styles.singleDuaa}>
         <TouchableOpacity onPress={this.handleClickDuaa}>
-          <View>
-            <Text style={styles.duaaText}>{text}</Text>
-          </View>
+          <Text style={[styles.duaaText, { fontSize: preferredFontSize }]}>{text}</Text>
         </TouchableOpacity>
         <View style={styles.duaaFooter}>
+          <TouchableOpacity onPress={this.handleOnPressShare}>
+            <Icon color="white" name="send" type="material-community" />
+          </TouchableOpacity>
           {times > 0 &&
             <Text style={styles.footerTimes}>{this.getTimes(times)}</Text>
           }
-          {isCompleted &&
-            <Icon style={styles.footerIconCheck} color="#3aed93" name="check-square" type="font-awesome" />
-          }
-          <TouchableOpacity onPress={this.handleOnPressShare}>
-            <Icon style={styles.footerIconSend} color="white" name="paper-plane" type="font-awesome" />
-          </TouchableOpacity>
         </View>
       </View>
     );
@@ -83,7 +84,8 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 22,
     lineHeight: 40,
-    shadowOffset: {width: 2, height: 2},
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: .5,
     shadowColor: 'white',
   },
   duaaFooter: {
@@ -91,19 +93,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#3F51B5',
     justifyContent: 'space-between',
-    paddingVertical: 7,
-    paddingHorizontal: 15,
-    borderBottomWidth: 3,
+    paddingHorizontal: 5,
+    borderBottomWidth: 2,
     borderBottomColor: '#7989e0',
   },
   footerTimes: {
+    paddingTop: 3,
     color: 'white',
     fontWeight: 'bold',
   },
-  footerIconCheck: {
-    backgroundColor: 'red',
-  },
-  footerIconSend: {
-    color:'white',
-  },
 });
+
+const mapState = (state) => (state);
+
+export default connect(mapState)(SingleDuaa);
