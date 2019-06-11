@@ -77,7 +77,7 @@ class MyAzkarView extends Component {
           <View style={{ flex: 1, marginHorizontal: 15 }}>
             <Button
               titleStyle={styles.addDuaaButton}
-              title="إضافة الدعاء"
+              title="حــفــظ"
               linearGradientProps={{ colors: ['#3F51B5', '#3F51B5'] }}
               onPress={() => this.handleOnPress()}
             />

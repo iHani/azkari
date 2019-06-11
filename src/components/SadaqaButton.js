@@ -1,17 +1,43 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, View, TouchableHighlight } from 'react-native';
+import { Clipboard, StyleSheet, Share, TextInput, View, TouchableHighlight } from 'react-native';
 import { Button, Divider, Overlay, Text } from 'react-native-elements';
+import { connect } from 'redux';
 
 class SadaqaButton extends Component {
 
   state = {
-    sadaqaModal: false,
+    sadaqaModal: false, displayCopiedMessage: false, sadaqaFor: '',
     sadaqaFor: '',
+    displayCopiedMessage: false
   }
 
   handleTasaddaq() {
     console.log('sadaqa To', this.state.sadaqaFor);
+    Share.share({
+      message: `هذا التطبيق صدقه جاريه عن ${this.state.sadaqaFor}`,
+      url: 'https://play.google.com/store/apps/details?id=www.akfaa.co.azkari',
+      title: 'Share with'
+    });
   }
+
+  // async _getContent() {
+  //   var content = await Clipboard.getString();
+  // }
+
+  async handleCopyLink() {
+    const message = `هذا التطبيق صدقه جاريه عن ${this.state.sadaqaFor} 
+    https://play.google.com/store/apps/details?id=www.akfaa.co.azkari`
+    Clipboard.setString(message);
+
+    try {
+      const content = await Clipboard.getString();
+      this.setState({ displayCopiedMessage: true })
+      // timer 5 sec to disable displayCopiedMessage
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
 
   render() {
     return (
@@ -28,7 +54,7 @@ class SadaqaButton extends Component {
         {this.state.sadaqaModal && (
           <Overlay
             isVisible={this.state.sadaqaModal}
-            onBackdropPress={() => this.setState({ sadaqaModal: false })}
+            onBackdropPress={() => this.setState({ sadaqaModal: false, displayCopiedMessage: false, sadaqaFor: '' })}
             overlayStyle={styles.overlyStyle}
             borderRadius={8}
           >
@@ -41,14 +67,16 @@ class SadaqaButton extends Component {
                 style={styles.inputStyle}
                 value={this.state.sadaqaFor}
                 onChangeText={(text) => this.setState({ sadaqaFor: text })}
-
               />
+              {this.state.displayCopiedMessage &&
+                <Text style={{ color: 'green', textAlign: 'center' }}>تم نسخ الرابط</Text>
+              }
               <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
                 <Button
                   title="نسخ الرابط"
                   style={{ padding: 6, width: 110, color: 'white' }}
                   linearGradientProps={{ colors: ['#3F51B5', '#3F51B5'] }}
-                  onPress={() => this.handleTasaddaq()}
+                  onPress={() => this.handleCopyLink()}
                 />
                 <Button
                   title="تصدق"
@@ -86,7 +114,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 3,
     height: 50,
-    marginVertical: 10,
+    marginVertical: 5,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center'
@@ -96,7 +124,7 @@ const styles = StyleSheet.create({
     borderColor: '#3F51B5',
     borderRadius: 10,
     borderWidth: 4,
-    height: 270,
+    height: 300,
 
   }
 });

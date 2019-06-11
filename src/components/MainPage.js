@@ -28,6 +28,7 @@ class MainPage extends Component {
       <View style={styles.container}>
         <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
           <SadaqaButton />
+          <MyAzkarButton navigate={this.props.navigation.navigate} />
           <ScrollView>
             {this.props.duaaCategoryList.map(category => {
               const { id, title } = category;
@@ -42,7 +43,6 @@ class MainPage extends Component {
                 </TouchableHighlight>
               )
             })}
-            <MyAzkarButton navigate={this.props.navigation.navigate} />
           </ScrollView>
         </ImageBackground>
       </View>

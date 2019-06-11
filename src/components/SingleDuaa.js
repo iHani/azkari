@@ -27,7 +27,7 @@ class SingleDuaa extends Component {
       message: this.props.text,
       title: 'Share with'
     });
-87
+
   getTimes(number = 1) {
     if (number === 1) {
       return `مره واحده`;
