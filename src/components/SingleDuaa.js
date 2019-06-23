@@ -3,11 +3,23 @@ import { connect } from 'react-redux';
 import { StyleSheet, Share, Text, View, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 
+import { editZekr, removeDuaa } from '../redux/actions';
+
 class SingleDuaa extends Component {
 
   state = {
-    times: this.props.times || 1,
+    index: this.props.myDuaaIndex,
+    text: this.props.text,
+    times: this.props.times,
     isCompleted: false,
+  }
+
+  updateDuaa(duaa) {
+    this.setState({ ...duaa });
+  }
+
+  handleRemoveDuaa(index) {
+    this.props.removeDuaa(index);
   }
 
   handleClickDuaa = () => {
@@ -40,12 +52,23 @@ class SingleDuaa extends Component {
     }
   }
 
+  handleEditDuaa = () => {
+    const { myDuaaIndex, text, times } = this.props;
+    this.props.navigate('EditDuaa', {
+      index: myDuaaIndex,
+      text,
+      times,
+      updateDuaa: this.updateDuaa.bind(this),
+      removeDuaa: this.handleRemoveDuaa.bind(this)
+    });
+  }
+
   render() {
-    const { isCompleted, times } = this.state;
-    const { text, preferredFontSize } = this.props;
+    const { isCompleted, text, times } = this.state;
+    const { preferredFontSize, isMyAzkar } = this.props;
 
     if (isCompleted) {
-      return null
+      return null;
     }
 
     return (
@@ -54,12 +77,19 @@ class SingleDuaa extends Component {
           <Text style={[styles.duaaText, { fontSize: preferredFontSize }]}>{text}</Text>
         </TouchableOpacity>
         <View style={styles.duaaFooter}>
-          <TouchableOpacity onPress={this.handleOnPressShare}>
+          <TouchableOpacity onPress={this.handleOnPressShare} style={styles.duaaFooterIcon}>
             <Icon color="white" name="send" type="material-community" />
           </TouchableOpacity>
-          {times > 0 &&
-            <Text style={styles.footerTimes}>{this.getTimes(times)}</Text>
+          {isMyAzkar &&
+            <TouchableOpacity onPress={this.handleEditDuaa} style={styles.duaaFooterIcon}>
+              <Icon color="white" name="pencil" type="material-community" />
+            </TouchableOpacity>
           }
+          <View style={[styles.duaaFooterIcon, { flex: 1, alignItems: 'flex-end' }]}>
+            {times > 0 &&
+              <Text style={styles.footerTimes}>{this.getTimes(times)}</Text>
+            }
+          </View>
         </View>
       </View>
     );
@@ -76,6 +106,7 @@ const styles = StyleSheet.create({
   singleDuaa: {
     backgroundColor: 'rgba(0, 0, 0, .17)',
     marginHorizontal: 10,
+    marginBottom: 6,
   },
   duaaText: {
     writingDirection: 'rtl',
@@ -91,11 +122,15 @@ const styles = StyleSheet.create({
   duaaFooter: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     backgroundColor: '#3F51B5',
-    justifyContent: 'space-between',
     paddingHorizontal: 5,
     borderBottomWidth: 2,
     borderBottomColor: '#7989e0',
+  },
+  duaaFooterIcon: {
+    paddingHorizontal: 5,
   },
   footerTimes: {
     paddingTop: 3,
@@ -106,4 +141,11 @@ const styles = StyleSheet.create({
 
 const mapState = (state) => (state);
 
-export default connect(mapState)(SingleDuaa);
+
+const mapDispatch = (dispatch) => ({
+  // editZekr: (index, zekr) => dispatch(editZekr(index, zekr)),
+  removeDuaa: (index) => dispatch(removeDuaa(index)),
+});
+
+
+export default connect(mapState, mapDispatch)(SingleDuaa);

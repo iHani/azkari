@@ -12,13 +12,13 @@ class FontsizeControllers extends Component {
     return (
       <View style={styles.fontsizeControllersBox}>
         <TouchableHighlight onPress={() => this.props.navigate('Home')}>
-          <Icon color="white" size={28} name="home" type="font-awesome" iconStyle={{ marginRight: 20 }} />
+          <Icon color="white" underlayColor="#3F51B5" size={25} name="home" type="font-awesome" iconStyle={{ marginRight: 20 }} />
         </TouchableHighlight>
         <TouchableHighlight onPress={() => this.handleUpdateFont('smaller')}>
-          <Icon color="white" size={28} name="search-minus" type="font-awesome" iconStyle={{ marginRight: 20 }} />
+          <Icon color="white" underlayColor="#3F51B5" size={25} name="search-minus" type="font-awesome" iconStyle={{ marginRight: 20 }} />
         </TouchableHighlight>
         <TouchableHighlight onPress={() => this.handleUpdateFont('larger')}>
-          <Icon color="white" size={28} name="search-plus" type="font-awesome" iconStyle={{ marginRight: 10 }} />
+          <Icon color="white" underlayColor="#3F51B5" size={25} name="search-plus" type="font-awesome" iconStyle={{ marginRight: 10 }} />
         </TouchableHighlight>
       </View>
     )

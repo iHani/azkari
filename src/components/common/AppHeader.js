@@ -13,10 +13,9 @@ function AppHeader() {
   />
 
   function handleClickShare() {
-    console.log("click share");
     Share.share({
-      message: 'Azkari App تطبيق أذكاري',
-      url: 'https://play.google.com/store/apps/details?id=www.akfaa.co.azkari',
+      message: `Azkari App تطبيق أذكاري  
+      https://play.google.com/store/apps/details?id=www.akfaa.co.azkari`,
       title: 'Share with'
     });
   }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Clipboard, StyleSheet, Share, TextInput, View, TouchableHighlight } from 'react-native';
 import { Button, Divider, Overlay, Text } from 'react-native-elements';
-import { connect } from 'redux';
 
 class SadaqaButton extends Component {
 
@@ -12,20 +11,15 @@ class SadaqaButton extends Component {
   }
 
   handleTasaddaq() {
-    console.log('sadaqa To', this.state.sadaqaFor);
     Share.share({
-      message: `هذا التطبيق صدقه جاريه عن ${this.state.sadaqaFor}`,
-      url: 'https://play.google.com/store/apps/details?id=www.akfaa.co.azkari',
+      message: `هذا التطبيق صدقه جاريه عن ${this.state.sadaqaFor}, 
+      https://play.google.com/store/apps/details?id=www.akfaa.co.azkari`,
       title: 'Share with'
     });
   }
 
-  // async _getContent() {
-  //   var content = await Clipboard.getString();
-  // }
-
   async handleCopyLink() {
-    const message = `هذا التطبيق صدقه جاريه عن ${this.state.sadaqaFor} 
+    const message = `هذا التطبيق صدقه جاريه عن ${this.state.sadaqaFor}, 
     https://play.google.com/store/apps/details?id=www.akfaa.co.azkari`
     Clipboard.setString(message);
 
@@ -37,7 +31,6 @@ class SadaqaButton extends Component {
       console.error(error);
     }
   }
-
 
   render() {
     return (
@@ -92,7 +85,6 @@ class SadaqaButton extends Component {
     )
   }
 }
-
 
 const styles = StyleSheet.create({
   buttonStyle: {

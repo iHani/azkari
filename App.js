@@ -3,27 +3,40 @@ import { Provider } from 'react-redux';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 import { createStore } from 'redux';
 import devToolsEnhancer from 'remote-redux-devtools';
+import { YellowBox } from 'react-native';
 
 import MainPage from './src/components/MainPage';
 import DuaaList from './src/components/DuaaList';
-import MyAzkarView from './src/components/MyAzkarView';
+// import MyAzkarView from './src/components/MyAzkarView';
 import AddAzkarView from './src/components/AddAzkarView';
+import EditDuaa from './src/components/EditDuaa';
 import reducers from './src/redux/reducers';
 
-const MainNavigator = createStackNavigator({
+YellowBox.ignoreWarnings(['Remote debugger']);
+
+const RouteConfigs = {
   Home: {
     screen: MainPage,
   },
   DuaaList: {
     screen: DuaaList,
   },
-  MyAzkarView: {
-    screen: MyAzkarView,
-  },
+  // MyAzkarView: {
+  //   screen: MyAzkarView,
+  // },
   AddAzkarView: {
     screen: AddAzkarView,
   },
-});
+  EditDuaa: {
+    screen: EditDuaa,
+  },
+};
+
+const StackNavigatorConfig = {
+  mode: 'card'
+}
+
+const MainNavigator = createStackNavigator(RouteConfigs, StackNavigatorConfig);
 
 let Navigation = createAppContainer(MainNavigator);
 

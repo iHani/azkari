@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Alert } from 'react-native';
 import {
   ImageBackground,
   StyleSheet,
@@ -11,7 +12,7 @@ import {
 } from 'react-native';
 import { Button, Text } from 'react-native-elements'
 
-import { addNewZekr } from '../redux/actions';
+import { editDuaa, removeDuaa } from '../redux/actions';
 
 const backgroundImage = require('../backgroundImage.png');
 
@@ -23,28 +24,56 @@ const DismissKeyboard = ({ children }) => (
   </TouchableWithoutFeedback>
 );
 
-class AddAzkarView extends Component {
+class EditDuaa extends Component {
 
   state = {
-    text: '',
-    times: 1
+    index: this.props.navigation.getParam('index'),
+    text: this.props.navigation.getParam('text'),
+    times: this.props.navigation.getParam('times'),
   }
 
   static navigationOptions = () => ({
-    title: 'إضــافــة دعــاء',
+    title: 'تعــديــل الدعــاء',
     headerTitleStyle: styles.colorWhite,
     headerBackTitleStyle: styles.colorWhite,
     headerStyle: styles.duaaListHeader,
   });
 
-  handleSaveZekr() {
-    const { text, times } = this.state;
+  handleSaveChanges() {
+    const { index, text, times } = this.state;
     const newZekr = { text, times };
-    this.props.addNewZekr(newZekr);
+
+    this.props.editDuaa(index, newZekr)
+    this.props.navigation.state.params.updateDuaa(newZekr);
     this.props.navigation.navigate('DuaaList');
 
     // TODO save it outsie redux (localstorage or sqllight)
 
+  }
+
+  handleDeleteDuaa(index) {
+    Alert.alert(
+      'حذف الدعاء؟',
+      ' ',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            // this.props.navigation.state.params.removeDuaa(index);
+            this.props.removeDuaa(index);
+            this.props.navigation.navigate('DuaaList');
+
+            // TODO save it outsie redux (localstorage or sqllight)    
+
+          }
+        },
+      ],
+      { cancelable: false },
+    );
   }
 
   englishinize = (number) =>
@@ -65,7 +94,7 @@ class AddAzkarView extends Component {
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
             <TextInput
-              keyboardType='number-pad'
+              keyboardType='numeric'
               style={styles.timesInput}
               onChangeText={(times) => this.setState({ times: this.englishinize(times) })}
               value={this.state.times.toString()}
@@ -75,10 +104,19 @@ class AddAzkarView extends Component {
 
           <View style={{ flex: 1, marginHorizontal: 15 }}>
             <Button
+              style={{ marginVertical: 5 }}
               titleStyle={styles.addDuaaButton}
-              title="حــفــظ"
+              title="حـفـظ"
               linearGradientProps={{ colors: ['#3F51B5', '#3F51B5'] }}
-              onPress={() => this.handleSaveZekr()}
+              onPress={() => this.handleSaveChanges()}
+            />
+
+            <Button
+              style={{ marginVertical: 5 }}
+              titleStyle={styles.addDuaaButton}
+              title="حــذف"
+              linearGradientProps={{ colors: ['#d6453e', '#d6453e'] }}
+              onPress={() => this.handleDeleteDuaa(this.state.index)}
             />
           </View>
 
@@ -130,14 +168,14 @@ const styles = StyleSheet.create({
   addDuaaButton: {
     color: 'white',
   },
-
 });
 
 const mapState = (state) => (state);
 
 const mapDispatch = (dispatch) => ({
-  updateFontSize: (option) => dispatch(updateFontSize(option)),
-  addNewZekr: (zekr) => dispatch(addNewZekr(zekr)),
+  editDuaa: (index, zekr) => dispatch(editDuaa(index, zekr)),
+  removeDuaa: (index) => dispatch(removeDuaa(index)),
 });
 
-export default connect(mapState, mapDispatch)(AddAzkarView);
+export default connect(mapState, mapDispatch)(EditDuaa);
+// export default EditDuaa;

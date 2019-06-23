@@ -21,23 +21,23 @@ class MyAzkarView extends Component {
   render() {
     const { myAzkarList } = this.props;
     const { navigate } = this.props.navigation;
-
+    const { update } = this.props.navigation.state.params || false;
+    
+    if (update) {
+      
+    }
     return (
       <View style={styles.container}>
         <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
           <ScrollView style={{ paddingTop: 10 }}>
-            {myAzkarList.map((duaa, i) =>
-              <SingleDuaa key={i} {...duaa} {...this.props} />
+            {myAzkarList.map((duaa, i) => 
+              <SingleDuaa key={i} index={i} {...duaa} {...this.props} isFromMyAzkar={true} />
             )}
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', height: 80, marginTop: 50 }}>
-              <Button
-                title="تعديل الدعاء"
-                style={{ padding: 6, width: 150, color: 'white' }}
-                linearGradientProps={{ colors: ['#3F51B5', '#3F51B5'] }}
-              />
+            <View style={{ flex: 1, marginHorizontal: 15, marginTop: 50 }}>
+
               <Button
                 title="إضافة دعاء"
-                style={{ padding: 6, width: 150, color: 'white' }}
+                style={{ padding: 6, width: 'auto', color: 'white' }}
                 linearGradientProps={{ colors: ['#3F51B5', '#3F51B5'] }}
                 onPress={() => navigate('AddAzkarView')}
               />

@@ -5,11 +5,14 @@ import { Button } from 'react-native-elements';
 
 import AppHeader from './common/AppHeader';
 import SadaqaButton from './SadaqaButton';
-import MyAzkarButton from './MyAzkarButton';
 
 const backgroundImage = require('../backgroundImage.png');
 
 class MainPage extends Component {
+
+  state = {
+    azkarList: this.props.azkarList
+  }
 
   static navigationOptions = ({ navigation }) => ({
     headerBackTitle: 'رجوع',
@@ -21,25 +24,23 @@ class MainPage extends Component {
     navigate('DuaaList', { category });
   }
 
-
   render() {
-
     return (
       <View style={styles.container}>
         <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
           <SadaqaButton />
-          <MyAzkarButton navigate={this.props.navigation.navigate} />
+          {/* <MyAzkarButton navigate={this.props.navigation.navigate} /> */}
           <ScrollView>
-            {this.props.duaaCategoryList.map(category => {
+            {this.state.azkarList.map(category => {
               const { id, title } = category;
               return (
                 <TouchableHighlight key={id}>
                   <Button
                     onPress={() => this.onPress(category)}
                     buttonStyle={styles.buttonStyle}
-                    type="clear"
                     titleStyle={styles.titleStyle}
-                    title={title} />
+                    title={title}
+                  />
                 </TouchableHighlight>
               )
             })}

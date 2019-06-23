@@ -1,24 +1,19 @@
-import duaaCategoryList from '../data/allAzkar';
+import azkarList from '../data/allAzkar';
 
 import {
   UPDATE_FONT_SIZE,
   ADD_NEW_ZEKR,
+  EDIT_DUAA,
+  REMOVE_DUAA,
 } from './actions';
 
 const initialState = {
-  duaaCategoryList,
   preferredFontSize: 22,
-  myAzkarList: [
-    {
-      "text": "text here..",
-      "times": 1
-    },
-
-  ]
+  azkarList
 };
 
 export default (state = initialState, action) => {
-  const { type, option, zekr } = action;
+  const { type, option, zekr, index } = action;
 
   switch (type) {
     case UPDATE_FONT_SIZE:
@@ -34,12 +29,40 @@ export default (state = initialState, action) => {
         preferredFontSize: newSize
       };
 
-
     case ADD_NEW_ZEKR:
       return {
         ...state,
-        myAzkarList: state.myAzkarList.concat({ ...zekr })
+        azkarList: state.azkarList.map(cat => {
+          if (cat.id === 'myazkar') {
+            cat.azkar.push(zekr);
+          }
+          return cat;
+        })
       }
+
+    case EDIT_DUAA:
+      return {
+        ...state,
+        azkarList: state.azkarList.map(cat => {
+          if (cat.id === 'myazkar') {
+            cat.azkar[index] = zekr;
+          }
+          return cat;
+        })
+      };
+
+    case REMOVE_DUAA:
+      console.log("duaindex to remoev", index);
+      
+      return {
+        ...state,
+        azkarList: state.azkarList.map(cat => {
+          if (cat.id === 'myazkar') {
+            cat.azkar = cat.azkar.filter((_, i) => i !== index);
+          }
+          return cat;
+        })
+      };
 
     default:
       return state;
