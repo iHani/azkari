@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   singleDuaa: {
     backgroundColor: 'rgba(0, 0, 0, .17)',
     marginHorizontal: 10,
-    marginBottom: 6,
+    marginBottom: 3,
   },
   duaaText: {
     writingDirection: 'rtl',
