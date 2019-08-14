@@ -11,11 +11,6 @@ const backgroundImage = require('../backgroundImage.png');
 
 class DuaaList extends Component {
 
-  state = {
-    id: this.props.navigation.getParam('category').id,
-    azkar: this.props.navigation.getParam('category').azkar,
-  }
-
   static navigationOptions = ({ navigation }) => ({
     title: navigation.getParam('category').title.replace(/ـ/g, ''),
     headerTitleStyle: styles.colorWhite,
@@ -24,8 +19,13 @@ class DuaaList extends Component {
     headerRight: <FontsizeControllers navigate={navigation.navigate} />
   });
 
+    shouldComponentUpdate(nextProps, nextState) {
+      console.log("shouldComponentUpdate")
+    return false;
+  }
+
   render() {
-    const { id, azkar } = this.state;
+    let { id, azkar } = this.props.navigation.getParam('category');
     const isMyAzkar = id === 'myazkar' || false;
     const { navigate } = this.props.navigation;
 
@@ -37,7 +37,7 @@ class DuaaList extends Component {
               <SingleDuaa
                 key={i}
                 {...duaa}
-                myDuaaIndex={i}
+                index={i}
                 isMyAzkar={isMyAzkar}
                 navigate={navigate}
               />

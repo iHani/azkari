@@ -8,17 +8,19 @@ import { editZekr, removeDuaa } from '../redux/actions';
 class SingleDuaa extends Component {
 
   state = {
-    index: this.props.myDuaaIndex,
+    index: this.props.index,
     text: this.props.text,
     times: this.props.times,
     isCompleted: false,
   }
 
-  updateDuaa(duaa) {
+  updateDuaa = (duaa) => {
+    console.log("duaa", duaa);
+
     this.setState({ ...duaa });
   }
 
-  handleRemoveDuaa(index) {
+  handleRemoveDuaa = (index) => {
     this.props.removeDuaa(index);
   }
 
@@ -53,14 +55,16 @@ class SingleDuaa extends Component {
   }
 
   handleEditDuaa = () => {
-    const { myDuaaIndex, text, times } = this.props;
+
+    const { index, text, times } = this.props;
     this.props.navigate('EditDuaa', {
-      index: myDuaaIndex,
+      index,
       text,
       times,
-      updateDuaa: this.updateDuaa.bind(this),
-      removeDuaa: this.handleRemoveDuaa.bind(this)
+      updateDuaa: this.updateDuaa,
+      removeDuaa: this.handleRemoveDuaa
     });
+    return
   }
 
   render() {
@@ -81,7 +85,7 @@ class SingleDuaa extends Component {
             <Icon color="white" name="send" type="material-community" />
           </TouchableOpacity>
           {isMyAzkar &&
-            <TouchableOpacity onPress={this.handleEditDuaa} style={styles.duaaFooterIcon}>
+            <TouchableOpacity onPress={this.handleEditDuaa.bind(this)} style={styles.duaaFooterIcon}>
               <Icon color="white" name="pencil" type="material-community" />
             </TouchableOpacity>
           }
