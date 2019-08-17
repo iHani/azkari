@@ -56,14 +56,14 @@ class SingleDuaa extends Component {
 
   handleEditDuaa = () => {
     const { index, text, times } = this.props;
-    this.props.navigate('EditDuaa', {
+    const params = {
       index,
       text,
       times,
-      // updateDuaa: this.handleUpdateDuaa,
-      // removeDuaa: this.handleRemoveDuaa
-    });
-    return
+      handleEditZekr: this.props.handleEditZekr,
+      handleRemoveZekr: this.props.handleRemoveZekr,
+    };
+    this.props.navigate('EditDuaa', params);
   }
 
   render() {
@@ -84,7 +84,7 @@ class SingleDuaa extends Component {
             <Icon color="white" name="send" type="material-community" />
           </TouchableOpacity>
           {isMyAzkar &&
-            <TouchableOpacity onPress={() => this.props.navigate('EditDuaa', { index })} style={styles.duaaFooterIcon}>
+            <TouchableOpacity onPress={() => this.handleEditDuaa()} style={styles.duaaFooterIcon}>
               <Icon color="white" name="pencil" type="material-community" />
             </TouchableOpacity>
           }

@@ -1,5 +1,4 @@
 import React, { Component, memo } from 'react';
-import { connect } from 'react-redux';
 import { ImageBackground, StyleSheet, View, ScrollView, TouchableHighlight } from 'react-native';
 import { Button } from 'react-native-elements';
 
@@ -12,10 +11,6 @@ const backgroundImage = require('../backgroundImage.png');
 
 class MainPage extends Component {
 
-  state = {
-    allAzkarList: allAzkarList,
-  }
-
   static navigationOptions = ({ navigation }) => ({
     headerBackTitle: 'رجوع',
     header: AppHeader,
@@ -23,7 +18,7 @@ class MainPage extends Component {
 
   onPress = (categoryId) => {
     const { navigate } = this.props.navigation;
-    const category = this.state.allAzkarList.find(({ id }) => id === categoryId);   
+    const category = allAzkarList.find(({ id }) => id === categoryId);
     navigate('DuaaList', { category });
   }
 
@@ -39,7 +34,7 @@ class MainPage extends Component {
               titleStyle={styles.titleStyle}
               title="أذكـــــــــــــــاري"
             />
-            {this.state.allAzkarList.map(category => {
+            {allAzkarList.map(category => {
               const { id, title } = category;
               return (
                 <TouchableHighlight key={id}>
@@ -88,11 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
-const mapState = (state) => (state);
-
-const mapDispatch = (dispatch) => ({
-  updateFontSize: (option) => dispatch(updateFontSize(option)),
-});
-
-export default connect(mapState, mapDispatch)(MainPage);
+export default MainPage;

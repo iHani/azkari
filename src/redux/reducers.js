@@ -3,8 +3,8 @@
 import {
   UPDATE_FONT_SIZE,
   ADD_NEW_ZEKR,
-  UPDATE_DUAA,
-  REMOVE_DUAA,
+  UPDATE_ZEKR,
+  REMOVE_ZEKR,
 } from './actions';
 
 const initialState = {
@@ -56,18 +56,13 @@ export default (state = initialState, action) => {
         myAzkar: state.myAzkar.concat(zekr)
       }
 
-    case UPDATE_DUAA:
+    case UPDATE_ZEKR:
       return {
         ...state,
-        myAzkar: state.myAzkar.map((_, i) => {
-          if (i === index) {
-            return zekr;
-          }
-          return _;
-        }),
+        myAzkar: state.myAzkar.map((_, i) => i === index ? zekr : _)
       };
 
-    case REMOVE_DUAA:    
+    case REMOVE_ZEKR:
       return {
         ...state,
         myAzkar: state.myAzkar.filter((_, i) => i !== index)

@@ -5,7 +5,7 @@ import { Button } from 'react-native-elements';
 
 import SingleDuaa from './SingleDuaa';
 import FontsizeControllers from './FontsizeControllers';
-import { editZekr, removeZekr } from '../redux/actions';
+import { updateZekr, removeZekr } from '../redux/actions';
 
 const backgroundImage = require('../backgroundImage.png');
 
@@ -23,6 +23,20 @@ class MyAzkarView extends Component {
     headerStyle: styles.duaaListHeader,
     headerRight: <FontsizeControllers navigate={navigation.navigate} />
   });
+
+  handleEditZekr(index, zekr) {
+    this.setState(
+      prevState => prevState.myAzkar.map((_, i) => i === index ? zekr : _),
+      () => this.props.updateZekr(index, zekr)
+    );
+  }
+
+  handleRemoveZekr(index) {
+    this.setState(
+      prevState => prevState.myAzkar.filter((_, i) => i !== index),
+      () => this.props.removeZekr(index)
+    );
+  }
 
   componentDidMount() {
     //Here is the Trick
@@ -61,6 +75,8 @@ class MyAzkarView extends Component {
                 index={i}
                 isMyAzkar={true}
                 navigate={navigate}
+                handleEditZekr={this.handleEditZekr.bind(this)}
+                handleRemoveZekr={this.handleRemoveZekr.bind(this)}
               />
             )}
             <View style={{ flex: 1, marginHorizontal: 15, marginTop: 50 }}>
@@ -101,9 +117,13 @@ const styles = StyleSheet.create({
 
 const mapState = (state) => (state);
 
-const mapDispatch = (dispatch) => ({
-  editZekr: (index, zekr) => dispatch(editZekr(index, zekr)),
-  removeZekr: (index, zekr) => dispatch(removeZekr(index, zekr)),
-});
+// const mapDispatch = (dispatch) => ({
+//   updateZekr: (index, zekr) => dispatch(updateZekr(index, zekr)),
+//   removeZekr: (index) => dispatch(removeZekr(index)),
+// });
 
-export default connect(mapState, mapDispatch)(MyAzkarView);
+
+export default connect(mapState, {
+  updateZekr,
+  removeZekr
+})(MyAzkarView);

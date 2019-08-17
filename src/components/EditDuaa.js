@@ -53,9 +53,9 @@ class EditDuaa extends Component {
     const { index, text, times } = this.state;
     const newZekr = { text, times };
 
-    this.props.updateDuaa(index, newZekr)
+    // this.props.handleEditZekr(index, newZekr)
+    this.props.navigation.state.params.handleEditZekr(index, newZekr);
     this.props.navigation.navigate('MyAzkarView');
-    // this.props.navigation.state.params.updateDuaa(index, newZekr);
   }
 
   handleDeleteDuaa() {
@@ -70,9 +70,11 @@ class EditDuaa extends Component {
         {
           text: 'OK',
           onPress: () => {
-            this.props.removeDuaa(this.state.index);
+            // this.props.handleRemoveZekr(this.state.index);
+            this.props.navigation.state.params.handleRemoveZekr(this.state.index);
+            console.log("rem implm", this.props.navigation.state.params.handleRemoveZekr);
+            
             this.props.navigation.navigate('MyAzkarView');
-            // this.props.navigation.state.params.removeDuaa(this.state.index);
           }
         },
       ],
