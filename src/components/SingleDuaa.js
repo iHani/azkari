@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Share, Text, View, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { withNavigation } from 'react-navigation';
 
 // import { updateDuaa, removeDuaa } from '../redux/actions';
-
+// this.props.navigation.navigate('Details')
 class SingleDuaa extends Component {
 
   state = {
@@ -63,10 +64,12 @@ class SingleDuaa extends Component {
       handleEditZekr: this.props.handleEditZekr,
       handleRemoveZekr: this.props.handleRemoveZekr,
     };
-    this.props.navigate('EditDuaa', params);
+    this.props.navigation.navigate('EditDuaa', params);
   }
 
   render() {
+    console.log("singleduahasnavigation?", Object.keys(this.props));
+    
     const { isCompleted, index, text, times } = this.state;
     const { preferredFontSize, isMyAzkar } = this.props;
 
@@ -151,4 +154,5 @@ const mapDispatch = (dispatch) => ({
 });
 
 
-export default connect(mapState, mapDispatch)(SingleDuaa);
+export default connect(mapState, mapDispatch)(withNavigation(SingleDuaa));
+// export default withNavigation(SingleDuaa);

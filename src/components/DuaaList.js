@@ -18,13 +18,8 @@ class DuaaList extends Component {
     headerRight: <FontsizeControllers navigate={navigation.navigate} />
   });
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return true;
-  }
-
   render() {
-    const { id, azkar } = this.props.navigation.getParam('category');
-    const { navigate } = this.props.navigation;
+    const { azkar } = this.props.navigation.getParam('category');
 
     return (
       <View style={styles.container}>
@@ -35,7 +30,6 @@ class DuaaList extends Component {
                 key={i}
                 {...duaa}
                 isMyAzkar={false}
-                navigate={navigate}
               />
             )}
           </ScrollView>
@@ -68,9 +62,7 @@ const styles = StyleSheet.create({
 
 const mapState = (state) => (state);
 
-const mapDispatch = (dispatch) => ({
-  editZekr: (index, zekr) => dispatch(editZekr(index, zekr)),
-  removeZekr: (index, zekr) => dispatch(removeZekr(index, zekr)),
-});
-
-export default connect(mapState, mapDispatch)(DuaaList);
+export default connect(mapState, {
+  editZekr,
+  removeZekr
+})(DuaaList);

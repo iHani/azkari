@@ -62,8 +62,6 @@ class MyAzkarView extends Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
-
     return (
       <View style={styles.container}>
         <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
@@ -74,7 +72,6 @@ class MyAzkarView extends Component {
                 {...duaa}
                 index={i}
                 isMyAzkar={true}
-                navigate={navigate}
                 handleEditZekr={this.handleEditZekr.bind(this)}
                 handleRemoveZekr={this.handleRemoveZekr.bind(this)}
               />
