@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { Button, Text } from 'react-native-elements'
 
-import { editDuaa, removeDuaa } from '../redux/actions';
+import { updateDuaa, removeDuaa } from '../redux/actions';
 
 const backgroundImage = require('../backgroundImage.png');
 
@@ -27,9 +27,9 @@ const DismissKeyboard = ({ children }) => (
 class EditDuaa extends Component {
 
   state = {
-    index: this.props.navigation.getParam('index'),
-    text: this.props.navigation.getParam('text'),
-    times: this.props.navigation.getParam('times'),
+    index: '',
+    text: '',
+    times: '',
   }
 
   static navigationOptions = () => ({
@@ -39,19 +39,26 @@ class EditDuaa extends Component {
     headerStyle: styles.duaaListHeader,
   });
 
+  componentDidMount() {
+    const index = this.props.navigation.getParam('index');
+    const {text, times} = this.props.myAzkar[index];
+    this.setState({
+      index,
+      text,
+      times,
+    })
+  }
+
   handleSaveChanges() {
     const { index, text, times } = this.state;
     const newZekr = { text, times };
 
-    this.props.editDuaa(index, newZekr)
-    this.props.navigation.state.params.updateDuaa(newZekr);
-    this.props.navigation.navigate('DuaaList');
-
-    // TODO save it outsie redux (localstorage or sqllight)
-
+    this.props.updateDuaa(index, newZekr)
+    this.props.navigation.navigate('MyAzkarView');
+    // this.props.navigation.state.params.updateDuaa(index, newZekr);
   }
 
-  handleDeleteDuaa(index) {
+  handleDeleteDuaa() {
     Alert.alert(
       'حذف الدعاء؟',
       ' ',
@@ -63,12 +70,9 @@ class EditDuaa extends Component {
         {
           text: 'OK',
           onPress: () => {
-            // this.props.navigation.state.params.removeDuaa(index);
-            this.props.removeDuaa(index);
-            this.props.navigation.navigate('DuaaList');
-
-            // TODO save it outsie redux (localstorage or sqllight)    
-
+            this.props.removeDuaa(this.state.index);
+            this.props.navigation.navigate('MyAzkarView');
+            // this.props.navigation.state.params.removeDuaa(this.state.index);
           }
         },
       ],
@@ -116,7 +120,7 @@ class EditDuaa extends Component {
               titleStyle={styles.addDuaaButton}
               title="حــذف"
               linearGradientProps={{ colors: ['#d6453e', '#d6453e'] }}
-              onPress={() => this.handleDeleteDuaa(this.state.index)}
+              onPress={() => this.handleDeleteDuaa()}
             />
           </View>
 
@@ -173,9 +177,8 @@ const styles = StyleSheet.create({
 const mapState = (state) => (state);
 
 const mapDispatch = (dispatch) => ({
-  editDuaa: (index, zekr) => dispatch(editDuaa(index, zekr)),
+  updateDuaa: (index, zekr) => dispatch(updateDuaa(index, zekr)),
   removeDuaa: (index) => dispatch(removeDuaa(index)),
 });
 
 export default connect(mapState, mapDispatch)(EditDuaa);
-// export default EditDuaa;

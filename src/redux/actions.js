@@ -1,6 +1,6 @@
 export const UPDATE_FONT_SIZE = 'UPDATE_FONT_SIZE';
 export const ADD_NEW_ZEKR = 'ADD_NEW_ZEKR';
-export const EDIT_DUAA = 'EDIT_DUAA';
+export const UPDATE_DUAA = 'UPDATE_DUAA';
 export const REMOVE_DUAA = 'REMOVE_DUAA';
 
 export const updateFontSize = (option) => ({
@@ -13,8 +13,8 @@ export const addNewZekr = (zekr) => ({
     zekr
 });
 
-export const editDuaa = (index, zekr) => ({
-    type: EDIT_DUAA,
+export const updateDuaa = (index, zekr) => ({
+    type: UPDATE_DUAA,
     index,
     zekr
 });

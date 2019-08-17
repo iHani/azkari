@@ -7,7 +7,7 @@ import { YellowBox } from 'react-native';
 
 import MainPage from './src/components/MainPage';
 import DuaaList from './src/components/DuaaList';
-// import MyAzkarView from './src/components/MyAzkarView';
+import MyAzkarView from './src/components/MyAzkarView';
 import AddAzkarView from './src/components/AddAzkarView';
 import EditDuaa from './src/components/EditDuaa';
 import reducers from './src/redux/reducers';
@@ -21,9 +21,9 @@ const RouteConfigs = {
   DuaaList: {
     screen: DuaaList,
   },
-  // MyAzkarView: {
-  //   screen: MyAzkarView,
-  // },
+  MyAzkarView: {
+    screen: MyAzkarView,
+  },
   AddAzkarView: {
     screen: AddAzkarView,
   },
@@ -33,6 +33,7 @@ const RouteConfigs = {
 };
 
 const StackNavigatorConfig = {
+  initialRouteName: 'Home',
   mode: 'card'
 }
 

@@ -1,17 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, memo } from 'react';
 import { connect } from 'react-redux';
 import { ImageBackground, StyleSheet, View, ScrollView, TouchableHighlight } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import AppHeader from './common/AppHeader';
 import SadaqaButton from './SadaqaButton';
+// import allAzkarList from '../data/allAzkarJSON';
+import allAzkarList from '../data/allAzkar';
 
 const backgroundImage = require('../backgroundImage.png');
 
 class MainPage extends Component {
 
   state = {
-    azkarList: this.props.azkarList
+    allAzkarList: allAzkarList,
   }
 
   static navigationOptions = ({ navigation }) => ({
@@ -19,8 +21,9 @@ class MainPage extends Component {
     header: AppHeader,
   });
 
-  onPress = (category) => {
+  onPress = (categoryId) => {
     const { navigate } = this.props.navigation;
+    const category = this.state.allAzkarList.find(({ id }) => id === categoryId);   
     navigate('DuaaList', { category });
   }
 
@@ -29,14 +32,19 @@ class MainPage extends Component {
       <View style={styles.container}>
         <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
           <SadaqaButton />
-          {/* <MyAzkarButton navigate={this.props.navigation.navigate} /> */}
           <ScrollView>
-            {this.state.azkarList.map(category => {
+            <Button
+              onPress={() => this.props.navigation.navigate('MyAzkarView')}
+              buttonStyle={styles.buttonStyle}
+              titleStyle={styles.titleStyle}
+              title="أذكـــــــــــــــاري"
+            />
+            {this.state.allAzkarList.map(category => {
               const { id, title } = category;
               return (
                 <TouchableHighlight key={id}>
                   <Button
-                    onPress={() => this.onPress(category)}
+                    onPress={() => this.onPress(id)}
                     buttonStyle={styles.buttonStyle}
                     titleStyle={styles.titleStyle}
                     title={title}

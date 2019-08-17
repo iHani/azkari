@@ -39,9 +39,12 @@ class AddAzkarView extends Component {
 
   handleSaveZekr() {
     const { text, times } = this.state;
+
     const newZekr = { text, times };
+    console.log("hasnavigation?", Object.keys(this.props.navigation.goBack()));
     this.props.addNewZekr(newZekr);
-    this.props.navigation.navigate('DuaaList');
+    this.props.navigation.navigate('MyAzkarView');
+    // this.props.navigation.goBack()
 
     // TODO save it outsie redux (localstorage or sqllight)
 
@@ -135,9 +138,9 @@ const styles = StyleSheet.create({
 
 const mapState = (state) => (state);
 
-const mapDispatch = (dispatch) => ({
-  updateFontSize: (option) => dispatch(updateFontSize(option)),
-  addNewZekr: (zekr) => dispatch(addNewZekr(zekr)),
-});
+// const mapDispatch = (dispatch) => ({
+//   updateFontSize: (option) => dispatch(updateFontSize(option)),
+//   addNewZekr: (zekr) => dispatch(addNewZekr(zekr)),
+// });
 
-export default connect(mapState, mapDispatch)(AddAzkarView);
+export default connect(mapState, { addNewZekr })(AddAzkarView);

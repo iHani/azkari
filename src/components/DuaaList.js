@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ImageBackground, StyleSheet, View, ScrollView } from 'react-native';
-import { Button } from 'react-native-elements';
 
 import SingleDuaa from './SingleDuaa';
 import FontsizeControllers from './FontsizeControllers';
@@ -19,14 +18,12 @@ class DuaaList extends Component {
     headerRight: <FontsizeControllers navigate={navigation.navigate} />
   });
 
-    shouldComponentUpdate(nextProps, nextState) {
-      console.log("shouldComponentUpdate")
-    return false;
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
   }
 
   render() {
-    let { id, azkar } = this.props.navigation.getParam('category');
-    const isMyAzkar = id === 'myazkar' || false;
+    const { id, azkar } = this.props.navigation.getParam('category');
     const { navigate } = this.props.navigation;
 
     return (
@@ -37,22 +34,10 @@ class DuaaList extends Component {
               <SingleDuaa
                 key={i}
                 {...duaa}
-                index={i}
-                isMyAzkar={isMyAzkar}
+                isMyAzkar={false}
                 navigate={navigate}
               />
             )}
-
-            {isMyAzkar &&
-              <View style={{ flex: 1, marginHorizontal: 15, marginTop: 50 }}>
-                <Button
-                  title="إضافة دعاء"
-                  style={{ padding: 6, width: 'auto', color: 'white' }}
-                  linearGradientProps={{ colors: ['#3F51B5', '#3F51B5'] }}
-                  onPress={() => this.props.navigation.navigate('AddAzkarView')}
-                />
-              </View>
-            }
           </ScrollView>
         </ImageBackground>
       </View>

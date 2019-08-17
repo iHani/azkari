@@ -1,45 +1,74 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ImageBackground, StyleSheet, View, Text, ScrollView } from 'react-native';
+import { ImageBackground, StyleSheet, View, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import SingleDuaa from './SingleDuaa';
 import FontsizeControllers from './FontsizeControllers';
+import { editZekr, removeZekr } from '../redux/actions';
 
 const backgroundImage = require('../backgroundImage.png');
 
 class MyAzkarView extends Component {
 
+  state = {
+    myAzkar: []
+  }
+
   static navigationOptions = ({ navigation }) => ({
-    title: 'أذكـــاري',
+    title: "أذكـــــــــــــــاري",
+    headerBackTitle: 'رجوع',
     headerTitleStyle: styles.colorWhite,
     headerBackTitleStyle: styles.colorWhite,
     headerStyle: styles.duaaListHeader,
     headerRight: <FontsizeControllers navigate={navigation.navigate} />
   });
 
+  componentDidMount() {
+    //Here is the Trick
+    const { navigation } = this.props;
+    //Adding an event listner om focus
+    //So whenever the screen will have focus it will set the state to zero
+    this.focusListener = navigation.addListener('didFocus', () => {
+      // console.log("didfocus", this.props.myAzkar);
+      this.setState({ myAzkar: this.props.myAzkar });
+    });
+  }
+  componentWillUnmount() {
+    // Remove the event listener before removing the screen from the stack
+    this.focusListener.remove();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // console.log("shouldComponentUpdate");
+    return true;
+  }
+  componentDidUpdate() {
+    // console.log("componentDidUpdate", this.props.myAzkar);
+  }
+
   render() {
-    const { myAzkarList } = this.props;
     const { navigate } = this.props.navigation;
-    const { update } = this.props.navigation.state.params || false;
-    
-    if (update) {
-      
-    }
+
     return (
       <View style={styles.container}>
         <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
-          <ScrollView style={{ paddingTop: 10 }}>
-            {myAzkarList.map((duaa, i) => 
-              <SingleDuaa key={i} index={i} {...duaa} {...this.props} isFromMyAzkar={true} />
+          <ScrollView style={{ paddingTop: 10, marginBottom: 10 }}>
+            {this.state.myAzkar.map((duaa, i) =>
+              <SingleDuaa
+                key={i}
+                {...duaa}
+                index={i}
+                isMyAzkar={true}
+                navigate={navigate}
+              />
             )}
             <View style={{ flex: 1, marginHorizontal: 15, marginTop: 50 }}>
-
               <Button
                 title="إضافة دعاء"
                 style={{ padding: 6, width: 'auto', color: 'white' }}
                 linearGradientProps={{ colors: ['#3F51B5', '#3F51B5'] }}
-                onPress={() => navigate('AddAzkarView')}
+                onPress={() => this.props.navigation.navigate('AddAzkarView')}
               />
             </View>
           </ScrollView>
@@ -55,7 +84,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   controlBox: {
     flexDirection: 'row',
@@ -69,13 +97,13 @@ const styles = StyleSheet.create({
   colorWhite: {
     color: 'white',
   }
-
 });
 
 const mapState = (state) => (state);
 
 const mapDispatch = (dispatch) => ({
-  updateFontSize: (option) => dispatch(updateFontSize(option)),
+  editZekr: (index, zekr) => dispatch(editZekr(index, zekr)),
+  removeZekr: (index, zekr) => dispatch(removeZekr(index, zekr)),
 });
 
 export default connect(mapState, mapDispatch)(MyAzkarView);

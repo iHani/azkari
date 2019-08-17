@@ -1,15 +1,36 @@
-import azkarList from '../data/allAzkar';
+// import myAzkar from '../data/allAzkar';
 
 import {
   UPDATE_FONT_SIZE,
   ADD_NEW_ZEKR,
-  EDIT_DUAA,
+  UPDATE_DUAA,
   REMOVE_DUAA,
 } from './actions';
 
 const initialState = {
   preferredFontSize: 22,
-  azkarList
+  myAzkar: [
+    {
+      "text": "first",
+      "times": 11
+    },
+    {
+      "text": "second",
+      "times": 22
+    },
+    {
+      "text": "third",
+      "times": 33
+    },
+    {
+      "text": "fourth",
+      "times": 44
+    },
+    {
+      "text": "fifth",
+      "times": 55
+    }
+  ]
 };
 
 export default (state = initialState, action) => {
@@ -32,37 +53,25 @@ export default (state = initialState, action) => {
     case ADD_NEW_ZEKR:
       return {
         ...state,
-        azkarList: state.azkarList.map(cat => {
-          if (cat.id === 'myazkar') {
-            cat.azkar.push(zekr);
-          }
-          return cat;
-        })
+        myAzkar: state.myAzkar.concat(zekr)
       }
 
-    case EDIT_DUAA:
+    case UPDATE_DUAA:
       return {
         ...state,
-        azkarList: state.azkarList.map(cat => {
-          if (cat.id === 'myazkar') {
-            cat.azkar[index] = zekr;
+        myAzkar: state.myAzkar.map((_, i) => {
+          if (i === index) {
+            return zekr;
           }
-          return cat;
-        })
+          return _;
+        }),
       };
 
-    case REMOVE_DUAA:
-      console.log("duaindex to remoev", index);
-      
+    case REMOVE_DUAA:    
       return {
         ...state,
-        azkarList: state.azkarList.map(cat => {
-          if (cat.id === 'myazkar') {
-            cat.azkar = cat.azkar.filter((_, i) => i !== index);
-          }
-          return cat;
-        })
-      };
+        myAzkar: state.myAzkar.filter((_, i) => i !== index)
+      }
 
     default:
       return state;

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { StyleSheet, Share, Text, View, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 
-import { editZekr, removeDuaa } from '../redux/actions';
+// import { updateDuaa, removeDuaa } from '../redux/actions';
 
 class SingleDuaa extends Component {
 
@@ -12,16 +12,6 @@ class SingleDuaa extends Component {
     text: this.props.text,
     times: this.props.times,
     isCompleted: false,
-  }
-
-  updateDuaa = (duaa) => {
-    console.log("duaa", duaa);
-
-    this.setState({ ...duaa });
-  }
-
-  handleRemoveDuaa = (index) => {
-    this.props.removeDuaa(index);
   }
 
   handleClickDuaa = () => {
@@ -54,21 +44,30 @@ class SingleDuaa extends Component {
     }
   }
 
-  handleEditDuaa = () => {
+  // handleUpdateDuaa = (index, zekr) => {
+  //   this.props.updateDuaa(index, zekr);
+  //   this.props.navigate('DuaaList');
+  // }
 
+  // handleRemoveDuaa = (index) => {
+  //   this.props.removeDuaa(index);
+  //   this.props.navigate('DuaaList');
+  // }
+
+  handleEditDuaa = () => {
     const { index, text, times } = this.props;
     this.props.navigate('EditDuaa', {
       index,
       text,
       times,
-      updateDuaa: this.updateDuaa,
-      removeDuaa: this.handleRemoveDuaa
+      // updateDuaa: this.handleUpdateDuaa,
+      // removeDuaa: this.handleRemoveDuaa
     });
     return
   }
 
   render() {
-    const { isCompleted, text, times } = this.state;
+    const { isCompleted, index, text, times } = this.state;
     const { preferredFontSize, isMyAzkar } = this.props;
 
     if (isCompleted) {
@@ -85,7 +84,7 @@ class SingleDuaa extends Component {
             <Icon color="white" name="send" type="material-community" />
           </TouchableOpacity>
           {isMyAzkar &&
-            <TouchableOpacity onPress={this.handleEditDuaa.bind(this)} style={styles.duaaFooterIcon}>
+            <TouchableOpacity onPress={() => this.props.navigate('EditDuaa', { index })} style={styles.duaaFooterIcon}>
               <Icon color="white" name="pencil" type="material-community" />
             </TouchableOpacity>
           }
@@ -147,8 +146,8 @@ const mapState = (state) => (state);
 
 
 const mapDispatch = (dispatch) => ({
-  // editZekr: (index, zekr) => dispatch(editZekr(index, zekr)),
-  removeDuaa: (index) => dispatch(removeDuaa(index)),
+  // updateDuaa: (index, zekr) => dispatch(updateDuaa(index, zekr)),
+  // removeDuaa: (index) => dispatch(removeDuaa(index)),
 });
 
 
